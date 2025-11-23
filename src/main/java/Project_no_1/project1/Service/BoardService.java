@@ -2,11 +2,15 @@ package Project_no_1.project1.Service;
 
 import Project_no_1.project1.Dto.BoardPatchDto;
 import Project_no_1.project1.Dto.BoardPostDto;
+import Project_no_1.project1.Dto.BoardResponseDto;
 import Project_no_1.project1.Entity.Board;
 import Project_no_1.project1.Repo.BoardRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import org.springframework.stereotype.Service;
+
 
 @Service
 @RequiredArgsConstructor
@@ -33,11 +37,19 @@ public class BoardService {
 
         return boardRepository.save(board).getId();
     }
-    public Board findBoardId(Long  boardId) {
+    public Board findBoardId(Long boardId) {
         return boardRepository.findById(boardId).orElseThrow(()->new BusinessLogicException(BusinessLogicException.ExceptionCode.BOARD_NOT_FOUND));
     }
     public void deleteBoard(Long boardId) {
         findBoardId(boardId);
         boardRepository.deleteById(boardId);
+    }
+    public BoardResponseDto findByBoardId(Long boardId) {
+        Board board = findBoardId(boardId);
+        return BoardResponseDto.findFromBoard(board);
+    }
+    public Page<BoardResponseDto> findAllBoards(Pageable pageable) {
+        Page<Board>boards = boardRepository.findAll(pageable);
+        return boards.map(BoardResponseDto::findFromBoard);
     }
 }
