@@ -1,0 +1,25 @@
+
+11/25 스프링 게시판 정리, post
+ @NoArgsConstructor : 기본 생성자를 만들어 주는 어노테이션,  JPA에서는 구현체들을 기본생성자를 통해 초기화 하고 생성하는데 어노테이션 하나로 이 과정을 쉽게 만들수 있다.
+
+@GeneratedValue(strategy = GenerationType.IDENTITY) : 기본키를 지정함. DB를 식별하는데 쓰이는 대표요소
+
+@RequiredArgsConstructor : 
+public BoardService(BoardRepository boardRepository) {
+    this.boardRepository = boardRepository;
+}
+위 코드 과정 생략
+
+ResponseEntity를 사용해야 응답 상태, body값을 설정할수 있다. 참고로 body는 요청의 본체라고 생각하면된다. 실제 내용 즉 응답값이다.
+ex) public ResponseEntity postBoard(@RequestBody @Validated BoardPostDto boardPostDto) {}
+
+ResponseEntity란?
+
+ResponseEntity<T>
+
+T : 응답 본문(body)의 데이터 타입
+
+HTTP 응답 전체를 직접 구성할 수 있는 클래스
+
+Spring MVC에서 Controller가 반환할 수 있는 가장 유연한 응답 방식
+
